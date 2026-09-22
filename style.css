@@ -1,0 +1,68 @@
+/****** RESET ******/
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+ul,
+ol,
+li,
+figure,
+figcaption,
+hr {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+/****** COLORS ******/
+
+:root {
+    --green1: #346739;
+    --green2: #9FCB98; /* or #79AE6F */
+    --beige: #F2EDC2;
+    --orange: #E67E22;
+}
+
+/****** GENERAL STYLE ******/
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--beige);
+}
+
+#btn-notifications {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 100;
+    padding: 1rem 2rem;
+    background-color: var(--green1);
+    color: white;
+    border: 1px solid var(--green1);
+    border-radius: 60px;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px; /* #82 */
+}
