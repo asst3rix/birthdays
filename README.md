@@ -1,2 +1,2 @@
 # birthdays
-Web applications that sends notifications for birthdays.
+Web application that sends notifications for birthdays.
