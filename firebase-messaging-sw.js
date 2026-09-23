@@ -16,7 +16,7 @@ messaging.onBackgroundMessage((payload) => {
     const title = payload.notification.title || "Anniversaire";
     const options = {
         body: payload.notification.body,
-        icon: "/icon-192.png"
+        icon: "/images/icon-192.png"
     };
 
     self.registration.showNotification(title, options);
