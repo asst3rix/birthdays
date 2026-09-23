@@ -15,15 +15,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
+// To keep (default) or remove (granted or denied) the notification banner.
+updateNotificationUI();
+
 // Activating notifications.
 const btn = document.querySelector('#btn-notifications');
-const text = document.querySelector('#token');
 btn.addEventListener('click', async () => {
     try {
         // Ask permission to the user.
         const permission = await Notification.requestPermission();
 
+        // To keep (default) or remove (granted or denied) the notification banner.
+        updateNotificationUI();
+
         if (permission === 'granted') {
+
             // We store the Service Worker (important for iOS).
             const register = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
 
@@ -46,3 +52,14 @@ btn.addEventListener('click', async () => {
 onMessage(messaging, (payload) => {
     console.log(`[Test successfull] ${payload.notification.title} : ${payload.notification.body}`);
 });
+
+function updateNotificationUI () {
+    const notificationBanner = document.querySelector('#notificationBanner');
+    // granted = accepted
+    // denied = refused
+    // default = not yet accepted
+    const notificationStatus = Notification.permission;
+    if (notificationStatus !== 'default') {
+        notificationBanner.classList.add('displayNone');
+    }
+}
