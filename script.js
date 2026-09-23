@@ -33,22 +33,16 @@ btn.addEventListener('click', async () => {
                 serviceWorkerRegistration: register
             });
 
-            if (token) {
-                text.textContent = token;
-            } else {
-                alert("Can't retrieve the token.");
-            }
-            /*console.log('Voici votre Token FCM :', token);
-            alert('Notifications activées ! Token généré (voir console)');*/
+            console.log('FCM token:', token);
         } else {
-            alert('Permission refused.');
+            console.log('Permission denied.');
         }
     } catch (error) {
-        alert('Error while trying to get the FCM token: ' + error.message);
+        console.log('Error while trying to get the FCM token: ' + error.message);
     }
 });
 
 // Listen if a notification arrives while the app is open.
 onMessage(messaging, (payload) => {
-    alert(`[Test succesfull] ${payload.notification.title} : ${payload.notification.body}`);
+    console.log(`[Test successfull] ${payload.notification.title} : ${payload.notification.body}`);
 });
