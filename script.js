@@ -1,6 +1,6 @@
 // Import des SDK Firebase Web (Modular v10+)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getMessaging, getToken, requestPermission } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
 
 // 1. Vos identifiants Firebase (collez votre config ici)
 const firebaseConfig = {
@@ -10,7 +10,7 @@ const firebaseConfig = {
     storageBucket: "birthdays-notifications.firebasestorage.app",
     messagingSenderId: "1040189479045",
     appId: "1:1040189479045:web:0b3dfce7b4fdf94709f1ec"
-  };
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -25,26 +25,32 @@ btn.addEventListener('click', async () => {
         const permission = await Notification.requestPermission();
 
         if (permission === 'granted') {
-            console.log('Permission accordée !');
+            // Enregistrement explicite du Service Worker (Très important pour iOS)
+            const register = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
 
             // Récupère le token FCM (Clé VAPID nécessaire pour le Web)
             // On génèrera cette clé à l'étape suivante dans la console Firebase
             const token = await getToken(messaging, {
-                vapidKey: 'BLuuxjr5-a7EbeV8-px_ob0yYuQzz4G74oRvoSisMeB0eikOgo2P20heWGe5uu8ul2oujh49r3S4vgkISWO7WtA'
+                vapidKey: 'BLuuxjr5-a7EbeV8-px_ob0yYuQzz4G74oRvoSisMeB0eikOgo2P20heWGe5uu8ul2oujh49r3S4vgkISWO7WtA',
+                serviceWorkerRegistration: register
             });
 
-            text.textContent = token;
+            if (token) {
+                text.textContent = token;
+            } else {
+                alert("Impossible d'obtenir le token.");
+            }
             /*console.log('Voici votre Token FCM :', token);
             alert('Notifications activées ! Token généré (voir console)');*/
         } else {
             alert('Permission refusée.');
         }
     } catch (error) {
-        console.error('Erreur :', error);
+        alert('Erreur lors de la récupération du token : ' + error.message);
     }
 });
 
 // Écoute si une notification arrive pendant que l'app est ouverte
 onMessage(messaging, (payload) => {
-  alert(`[Test Réussi] ${payload.notification.title} : ${payload.notification.body}`);
+    alert(`[Test Réussi] ${payload.notification.title} : ${payload.notification.body}`);
 });
