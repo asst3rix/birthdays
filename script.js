@@ -15,17 +15,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
-// To keep (default) or remove (granted or denied) the notification banner.
+// To keep (default) or remove (granted) the notification banner or show special text (denied).
 updateNotificationUI();
 
 // Activating notifications.
-const btn = document.querySelector('#btn-notifications');
-btn.addEventListener('click', async () => {
+const btnEnableNotification = document.querySelector('#btn-notifications');
+btnEnableNotification.addEventListener('click', async () => {
     try {
         // Ask permission to the user.
         const permission = await Notification.requestPermission();
 
-        // To keep (default) or remove (granted or denied) the notification banner.
+        // To keep (default) or remove (granted) the notification banner or show special text (denied).
         updateNotificationUI();
 
         if (permission === 'granted') {
@@ -53,13 +53,26 @@ onMessage(messaging, (payload) => {
     console.log(`[Test successfull] ${payload.notification.title} : ${payload.notification.body}`);
 });
 
-function updateNotificationUI () {
+function updateNotificationUI() {
     const notificationBanner = document.querySelector('#notificationBanner');
-    // granted = accepted
-    // denied = refused
-    // default = not yet accepted
+    const notificationsBannerDenied = document.querySelector('#notificationBannerDenied');
     const notificationStatus = Notification.permission;
-    if (notificationStatus !== 'default') {
-        notificationBanner.classList.add('displayNone');
+
+    switch (notificationStatus) {
+        case 'granted':
+            notificationBanner.classList.add('hidden');
+            notificationsBannerDenied.classList.add('hidden');
+            break;
+
+        case 'denied':
+            notificationBanner.classList.add('hidden');
+            notificationsBannerDenied.classList.remove('hidden');
+            break;
+
+        case 'default':
+        default:
+            notificationBanner.classList.remove('hidden');
+            notificationsBannerDenied.classList.add('hidden');
+            break;
     }
 }
