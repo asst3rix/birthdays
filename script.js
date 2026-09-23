@@ -18,6 +18,7 @@ const messaging = getMessaging(app);
 
 // 2. Gestion du clic sur le bouton
 const btn = document.querySelector('#btn-notifications');
+const text = document.querySelector('#token');
 btn.addEventListener('click', async () => {
     try {
         // Demande la permission à l'utilisateur
@@ -32,8 +33,9 @@ btn.addEventListener('click', async () => {
                 vapidKey: 'BLuuxjr5-a7EbeV8-px_ob0yYuQzz4G74oRvoSisMeB0eikOgo2P20heWGe5uu8ul2oujh49r3S4vgkISWO7WtA'
             });
 
-            console.log('Voici votre Token FCM :', token);
-            alert('Notifications activées ! Token généré (voir console)');
+            text.textContent = token;
+            /*console.log('Voici votre Token FCM :', token);
+            alert('Notifications activées ! Token généré (voir console)');*/
         } else {
             alert('Permission refusée.');
         }
