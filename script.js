@@ -1,6 +1,7 @@
 // Importation of SDK Firebase Web (Modular v10+).
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyB_sQfn8l6XcW1zlcIz5Rhudyy9B-13Jh8",
@@ -76,3 +77,34 @@ function updateNotificationUI() {
             break;
     }
 }
+
+/*
+const db = getFirestore(app);
+async function importJSONToFirestore() {
+    try {
+        // 1. Charger le fichier JSON local
+        const response = await fetch('./anniversaire.json');
+        const birthdays = await response.json();
+
+        console.log(`Début de l'importation de ${birthdays.length} éléments...`);
+
+        // 2. Parcourir chaque élément et l'ajouter à Firestore
+        const collectionRef = collection(db, "birthdays");
+
+        for (const item of birthdays) {
+            await addDoc(collectionRef, item);
+            console.log(`Importé : ${item.name}`);
+        }
+
+        console.log("Importation terminée avec succès !");
+    } catch (error) {
+        console.error("Erreur lors de l'importation :", error);
+    }
+}
+
+// Bouton temporaire pour déclencher l'import
+const importBtn = document.querySelector('#btn-import');
+if (importBtn) {
+    importBtn.addEventListener('click', importJSONToFirestore);
+}
+*/
