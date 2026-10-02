@@ -1,7 +1,6 @@
 // Importation of SDK Firebase Web (Modular v10+).
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyB_sQfn8l6XcW1zlcIz5Rhudyy9B-13Jh8",
@@ -41,17 +40,17 @@ btnEnableNotification.addEventListener('click', async () => {
             });
 
             console.log('FCM token:', token);
+
+            if (token) {
+                // Enregistrer le token dans la base de donnée
+            }
+
         } else {
             console.log('Permission denied.');
         }
     } catch (error) {
         console.log('Error while trying to get the FCM token: ' + error.message);
     }
-});
-
-// Listen if a notification arrives while the app is open.
-onMessage(messaging, (payload) => {
-    console.log(`[Test successfull] ${payload.notification.title} : ${payload.notification.body}`);
 });
 
 function updateNotificationUI() {
@@ -79,6 +78,43 @@ function updateNotificationUI() {
 }
 
 /*
+async function checkBirthday() {
+    try {
+        const db = getFirestore(app);
+        const birthdays = collection(db, "birthdays");
+        const birthdayList = await getDocs(birthdays);
+        let birthdayOfToday = [];
+        birthdayList.forEach((person) => {
+            const personData = person.data();
+            if (personData.date) {
+                const birthdayDate = personData.date.slice(5);
+                if (birthdayDate === getMonthDayToday()) {
+                    birthdayOfToday.push(personData);
+                }
+            }
+        });
+        sendNotification(birthdayOfToday);
+    } catch (error) {
+        console.log("Erreur lors de l'éxécution de checkBirthday() : ", error);
+    }
+}
+
+async function sendNotification(birthdayList) {
+    console.log(birthdayList);
+}
+
+function getMonthDayToday() {
+    let month = (new Date().getMonth() + 1).toString();
+    if (month.length === 1) { month = "0" + month; }
+
+    let day = (new Date().getDate()).toString();
+    if (day.length === 1) { day = "0" + day; }
+
+    const today = month + "-" + day;
+    return today;
+}
+
+
 const db = getFirestore(app);
 async function importJSONToFirestore() {
     try {
